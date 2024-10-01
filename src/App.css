@@ -1,0 +1,98 @@
+.video-container {
+  width: 800px; /* Set desired width for the video container */
+  height: 450px; /* Set desired height for the video container */
+  max-width: 100%; /* Ensure it is responsive */
+  position: relative; /* For absolute positioning of controls */
+  background-color: #000;
+}
+
+.video-player {
+  width: 100%; /* Full width of the container */
+  height: 100%; /* Full height of the container */
+  object-fit: cover; /* Ensure the video covers the container */
+}
+
+.controls {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for controls */
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+input[type="range"] {
+  appearance: none;
+  width: 100%; /* Full width for better UI */
+  height: 4px;
+  background: #fff; /* White background for progress */
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  border-radius: 5px;
+  margin: 0 10px; /* Add margin between controls */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px; /* Thumb width */
+  height: 15px; /* Thumb height */
+  border-radius: 50%;
+  background: #ffffff; /* Change thumb color to white */
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* Volume slider specific styles */
+.slider {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.slider .level {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100px; /* Adjust the width of the volume slider */
+  height: 4px;
+  background: rgb(82, 82, 82);
+  overflow: hidden;
+  border-radius: 999px;
+  transition: height 0.1s;
+  margin-right: 10px;
+}
+
+.slider .level::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider .volume {
+  width: 25px;
+  height: auto;
+  fill: #fff;
+}
+
+.slider:hover .level {
+  height: 8px; /* Increase height on hover for better visibility */
+}
