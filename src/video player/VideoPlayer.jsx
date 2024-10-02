@@ -1,20 +1,28 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { BiSolidVolumeMute } from "react-icons/bi";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { GoUnmute } from "react-icons/go";
-import { RiFullscreenFill } from "react-icons/ri";
+import { RiFullscreenFill, RiFullscreenExitFill } from "react-icons/ri";
+
+
 
 const VideoPlayer = () => {
+  // Get data from Redux store
+  
+
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showPoster, setShowPoster] = useState(true); // State to manage poster visibility
 
   const togglePlayPause = () => {
     if (videoRef.current.paused || videoRef.current.ended) {
       videoRef.current.play();
       setIsPlaying(true);
+      setShowPoster(false); // Hide poster when video starts
     } else {
       videoRef.current.pause();
       setIsPlaying(false);
@@ -45,30 +53,72 @@ const VideoPlayer = () => {
 
   const handleVideoEnd = () => {
     setIsPlaying(false);
+    setShowPoster(true); // Show poster again after the video ends
+  };
+
+  const handleFullscreenToggle = () => {
+    if (!isFullscreen) {
+      videoRef.current.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+    setIsFullscreen(!isFullscreen);
+  };
+
+  // Listen for fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(document.fullscreenElement !== null);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  const handleVideoError = () => {
+    alert("An error occurred while loading the video. Please try again.");
   };
 
   return (
     <div className="video-container relative mx-auto">
+      {showPoster && (
+        <div className="poster-container absolute inset-0 flex items-center justify-center bg-black">
+          <img
+            src='https://64.media.tumblr.com/4efc9f53e0e397c4a0cde90cab16ccc9/5fc691b90541a3c2-ea/s640x960/a4a9178cf005b6b08375553b6e4f5186331ae979.gif' // Custom poster image URL
+            alt="Custom Poster"
+            className="w-full h-full object-cover"
+          />
+          <button
+            onClick={togglePlayPause}
+            className="play-button absolute bg-white text-black p-4 rounded-full"
+          >
+            <FaPlay className="text-3xl" />
+          </button>
+        </div>
+      )}
+
       <video
         ref={videoRef}
-        src="https://www.w3schools.com/html/mov_bbb.mp4"
+        src="https://www.w3schools.com/html/mov_bbb.mp4" // Your video URL
         className="video-player"
         onTimeUpdate={handleProgress}
         onEnded={handleVideoEnd}
+        onError={handleVideoError}
+        onClick={togglePlayPause}  // Allow clicking on the video to play/pause it
       />
 
       <div className="controls flex justify-between items-center absolute bottom-0 left-0 w-full p-2">
-        {/* Play/Pause Button */}
         <button onClick={togglePlayPause} className="text-white px-2">
           {isPlaying ? <FaPause /> : <FaPlay />}
         </button>
 
-        {/* Mute/Unmute Button */}
         <button onClick={toggleMute} className="text-white px-2">
           {isMuted ? <BiSolidVolumeMute /> : <GoUnmute />}
         </button>
 
-        {/* Progress Bar */}
         <input
           type="range"
           className="w-[150px] player-control mx-2"
@@ -78,7 +128,6 @@ const VideoPlayer = () => {
           onChange={handleSeek}
         />
 
-        {/* Volume Control with Custom Design */}
         <label className="slider">
           <input
             type="range"
@@ -107,12 +156,8 @@ const VideoPlayer = () => {
           </svg>
         </label>
 
-        {/* Fullscreen Button */}
-        <button
-          onClick={() => videoRef.current.requestFullscreen()}
-          className="text-white px-2"
-        >
-          <RiFullscreenFill />
+        <button onClick={handleFullscreenToggle} className="text-white px-2">
+          {isFullscreen ? <RiFullscreenExitFill /> : <RiFullscreenFill />}
         </button>
       </div>
     </div>

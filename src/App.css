@@ -1,23 +1,33 @@
 .video-container {
-  width: 800px; /* Set desired width for the video container */
-  height: 450px; /* Set desired height for the video container */
-  max-width: 100%; /* Ensure it is responsive */
-  position: relative; /* For absolute positioning of controls */
+  width: 800px;
+  height: 450px;
+  max-width: 100%;
+  position: relative;
   background-color: #000;
+  overflow: hidden;
 }
 
+
+
+
+
 .video-player {
-  width: 100%; /* Full width of the container */
-  height: 100%; /* Full height of the container */
-  object-fit: cover; /* Ensure the video covers the container */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .controls {
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for controls */
+  background-color: rgba(0, 0, 0, 0.5);
   padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3; /* Ensure controls appear above the poster */
 }
 
 button {
@@ -30,22 +40,22 @@ button {
 
 input[type="range"] {
   appearance: none;
-  width: 100%; /* Full width for better UI */
+  width: 100%;
   height: 4px;
-  background: #fff; /* White background for progress */
+  background: #fff;
   outline: none;
   opacity: 0.7;
   transition: opacity 0.2s;
   border-radius: 5px;
-  margin: 0 10px; /* Add margin between controls */
+  margin: 0 10px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
-  width: 15px; /* Thumb width */
-  height: 15px; /* Thumb height */
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  background: #ffffff; /* Change thumb color to white */
+  background: #ffffff;
   cursor: pointer;
 }
 
@@ -57,7 +67,6 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-/* Volume slider specific styles */
 .slider {
   display: flex;
   align-items: center;
@@ -65,10 +74,8 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .slider .level {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
-  width: 100px; /* Adjust the width of the volume slider */
+  width: 100px;
   height: 4px;
   background: rgb(82, 82, 82);
   overflow: hidden;
@@ -78,7 +85,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .slider .level::-webkit-slider-thumb {
-  -webkit-appearance: none;
   appearance: none;
   width: 15px;
   height: 15px;
@@ -94,5 +100,55 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .slider:hover .level {
-  height: 8px; /* Increase height on hover for better visibility */
+  height: 8px;
+}
+
+.poster-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Ensure the poster is behind the controls */
+}
+
+.poster-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play-button {
+  position: absolute;
+  background-color: #373737a3; /* New background color */
+  color: white;
+  padding: 15px;
+  border-radius: 50%;
+  z-index: 2; /* Ensure the play button is above the poster */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .video-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  input[type="range"] {
+    width: 100px;
+  }
+
+  .slider .level {
+    width: 80px;
+  }
 }
